@@ -3,7 +3,9 @@ package com.example.moviebooking.service;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +13,7 @@ import javax.persistence.Query;
 
 import ch.qos.logback.core.CoreConstants;
 import com.example.moviebooking.dao.*;
+import com.example.moviebooking.data.dto.PaymentRequestDTO;
 import com.example.moviebooking.data.entity.Order;
 import com.example.moviebooking.util.BMSConstants;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -18,6 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -160,7 +166,10 @@ public class MovieScreeningServiceImpl implements MovieScreeningService {
 	@Override
 	@CircuitBreaker(name=PAYMENT_SERVICE,fallbackMethod = "paymentGatewayFallBack")
 	public String submitPaymentDetail(Long userId, String transactionAmount, Long orderId) {
-		return restTemplate.getForObject(url, String.class);
+		PaymentRequestDTO paymentRequestDTO =
+				new PaymentRequestDTO().builder().userId(userId).transactionAmount(transactionAmount).
+						orderId(orderId).build();
+		return restTemplate.postForObject(url,paymentRequestDTO,String.class);
 	}
 
 	public String paymentGatewayFallBack(Exception e){
@@ -169,7 +178,7 @@ public class MovieScreeningServiceImpl implements MovieScreeningService {
 	}
 
 	@Override
-	public void updateSuccessOrder(Long orderId,String Orderstatus,String PaymentStatus) {
+	public void updateOrderStatus(Long orderId,String Orderstatus,String PaymentStatus) {
 		if(orderId != null){
 			Order order = orderRepo.findById(orderId).get();
 			order.setOrderStatus(BMSConstants.ORDER_COMPLETED);

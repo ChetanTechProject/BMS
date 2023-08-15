@@ -18,5 +18,5 @@ public interface MovieScreeningService {
 
 	public String submitPaymentDetail(Long userId,String transactionAmount,Long orderId);
 
-	public void updateSuccessOrder(Long orderId,String Orderstatus,String PaymentStatus);
+	public void updateOrderStatus(Long orderId,String Orderstatus,String PaymentStatus);
 }

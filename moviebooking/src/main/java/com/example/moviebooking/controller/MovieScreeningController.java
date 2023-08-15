@@ -64,11 +64,11 @@ public class MovieScreeningController {
 				 //append the number of seat's with booked seats to update new booked seats
 				 this.movieScreeningService.bookSeats(bookSeatsDto, bookedSeats + bookSeatsDto.getNumSeats(), orderId);
 				 //update order status as completed and payment as Success
-				 this.movieScreeningService.updateSuccessOrder(orderId,BMSConstants.ORDER_COMPLETED,BMSConstants.PAYMENT_SUCCESS);
+				 this.movieScreeningService.updateOrderStatus(orderId,BMSConstants.ORDER_COMPLETED,BMSConstants.PAYMENT_SUCCESS);
 			 }else{
 				 log.error("Error during Payment for Order " + orderId);
 				 //update order status as Failed and payment as Failed
-				 this.movieScreeningService.updateSuccessOrder(orderId,BMSConstants.ORDER_FAILED,BMSConstants.PAYMENT_FAILED);
+				 this.movieScreeningService.updateOrderStatus(orderId,BMSConstants.ORDER_FAILED,BMSConstants.PAYMENT_FAILED);
 				 return "Sorry Payment Service is Down, Try after Sometime";
 			 }
 		} catch (Exception e) {
