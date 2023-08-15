@@ -75,6 +75,7 @@ public class MovieScreeningServiceImpl implements MovieScreeningService {
 		MovieScreening movieScreening = null;
 		List<MovieScreening> movieList = new ArrayList<MovieScreening>();
 		BigInteger ingr = null;
+		BigInteger availbleSeats = null;
 
 		for (Object obj : resultList) {
 			movieScreening = new MovieScreening();
@@ -86,7 +87,8 @@ public class MovieScreeningServiceImpl implements MovieScreeningService {
 			movieScreening.setMovieName(movieName);
 			movieScreening.setScreeningDate(screeningDt);
 			movieScreening.setScreeningTime(DateUtil.convertTimeToString((java.sql.Time) objArray[2]));
-			movieScreening.setBookedSeats((int) objArray[3]);
+			availbleSeats = (BigInteger) objArray[3];
+			movieScreening.setAvailableSeats(availbleSeats.intValue());
 			movieList.add(movieScreening);
 
 		}

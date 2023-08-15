@@ -14,6 +14,6 @@ public class MovieScreening {
     private String theatreCity;
     private String screeningDate;
     private String screeningTime;
-    private int bookedSeats;
+    private int availableSeats;
 
 }
