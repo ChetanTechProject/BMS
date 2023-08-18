@@ -172,17 +172,17 @@ public class MovieScreeningServiceImpl implements MovieScreeningService {
 		return restTemplate.postForObject(url,paymentRequestDTO,String.class);
 	}
 
-	public String paymentGatewayFallBack(Exception e){
-		System.out.println("Fall Back Method called");
+	public String paymentGatewayFallBack(Long userId, String transactionAmount, Long orderId,Exception e){
+		System.out.println("Fall Back Method called " + orderId);
 		return "FAILED";
 	}
 
 	@Override
-	public void updateOrderStatus(Long orderId,String Orderstatus,String PaymentStatus) {
+	public void updateOrderStatus(Long orderId,String orderstatus,String PaymentStatus) {
 		if(orderId != null){
 			Order order = orderRepo.findById(orderId).get();
-			order.setOrderStatus(BMSConstants.ORDER_COMPLETED);
-			order.setPaymentStatus(BMSConstants.PAYMENT_SUCCESS);
+			order.setOrderStatus(orderstatus);
+			order.setPaymentStatus(PaymentStatus);
 			orderRepo.save(order);
 		}
 	}
